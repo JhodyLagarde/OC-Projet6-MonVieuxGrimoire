@@ -3,8 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 const path = require('path');
-const booksRoutes = require('./routes/books');
-const userRoutes = require('./routes/users');
+const booksRoutes = require('./routes/book');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://jhodylagarde:<password>@cluster-oc-p6-mvg.kzefyu6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-OC-P6-MVG',
     { 
