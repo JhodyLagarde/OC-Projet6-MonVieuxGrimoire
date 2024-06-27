@@ -106,21 +106,17 @@ exports.AddRate = (req, res, next) => {
         if (!book) {
           return res.status(404).json({ error });
         }
-
         // Vérifier si l'utilisateur n'a pas déjà noté le livre
         if (book.ratings.find(rating => rating.userId === userId)) {
           return res.status(400).json({ error: "Vous avez déjà noté ce livre" });
         }
-
-        // Ajout de la note dans le tableu
+        // Ajout de la note dans le tableau
         book.ratings.push({ userId, grade: rating });
-
         // Calcul de la nouvelle moyenne
         const allRatings = book.ratings.length;
         const ratingsSum = book.ratings.reduce((sum, rating) => sum + rating.grade, 0);
         const averageRating = ratingsSum / allRatings;
         book.averageRating = averageRating;
-        
         //Mise a jour des notes ainsi que de la moyenne du livre
         Book.updateOne({ _id: req.params.id }, { ratings: allRatings, averageRating: averageRating, _id: req.params.id })
             .then(() => { res.status(201).json({ message: "nouvelle note ajouté" })})
