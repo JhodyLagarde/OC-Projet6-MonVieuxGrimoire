@@ -1,12 +1,14 @@
 const express = require('express');
-const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 const path = require('path');
-const booksRoutes = require('./routes/book');
-const userRoutes = require('./routes/user');
+const booksRoutes = require('./routes/books');
+const userRoutes = require('./routes/users');
 
-mongoose.connect('mongodb+srv://jhodylagarde:<password>@cluster-oc-p6-mvg.kzefyu6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-OC-P6-MVG',
+require('dotenv').config();
+
+// Connexion a mongoDB
+mongoose.connect(process.env.ADDRESS_DB ,
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true 
@@ -14,8 +16,10 @@ mongoose.connect('mongodb+srv://jhodylagarde:<password>@cluster-oc-p6-mvg.kzefyu
       .then(() => console.log('Connexion à MongoDB réussie !'))
       .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+// Création de l'application express
 const app = express();
 
+//BodyParser avec middleware express
 app.use(express.json());
 
 // CORS
@@ -26,10 +30,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
-
+// Routing
 app.use('/api/books', booksRoutes);
 app.use('/api/auth', userRoutes);
+
+// Gestion d'image
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
