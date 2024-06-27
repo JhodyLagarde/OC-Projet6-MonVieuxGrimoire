@@ -118,9 +118,9 @@ exports.AddRate = (req, res, next) => {
         const averageRating = ratingsSum / allRatings;
         book.averageRating = averageRating;
         //Mise a jour des notes ainsi que de la moyenne du livre
-        Book.updateOne({ _id: req.params.id }, { ratings: allRatings, averageRating: averageRating, _id: req.params.id })
-            .then(() => { res.status(201).json({ message: "nouvelle note ajouté" })})
-            .catch(error => { res.status(400).json( { error })});
-      })
-    .catch((error) => res.status(404).json({ error })); 
+        book.save()
+        .then(() => { res.status(201).json({ message: 'Note enregistré !' }) })
+        .catch(error => { res.status(400).json( { error })});
+    })
+    .catch(error => res.status(500).json({ error }));
   };
