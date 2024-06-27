@@ -3,6 +3,7 @@ const app = require('./app');
 
 require('dotenv').config();
 
+// Configuration du port 
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -14,9 +15,11 @@ const normalizePort = val => {
   }
   return false;
 };
+
 const port = normalizePort( process.env.PORT || process.env.PORT_DB );
 app.set('port', port);
 
+// Géstion des erreurs
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -39,6 +42,7 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
+// Démarrage serveur
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();

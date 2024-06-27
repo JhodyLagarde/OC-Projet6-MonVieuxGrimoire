@@ -18,6 +18,6 @@ router.get('/', booksCtrl.getAllBooks);
 
 //Routes pour noter un livre et renvoyer les trois livres les mieux noté 
 router.get('/bestrating', booksCtrl.bestRating);
-router.post('/:id/rating', auth, booksCtrl.postRating);
+router.post('/:id/rating', auth, booksCtrl.AddRate);
 
 module.exports = router;

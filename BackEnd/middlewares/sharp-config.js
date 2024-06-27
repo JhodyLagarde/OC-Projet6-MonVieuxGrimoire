@@ -1,21 +1,22 @@
 const sharp = require('sharp');
 const fs = require('fs');
+const path = require('path');
 
 module.exports = async (req, res, next) => {
 	if (!req.file) {
-    	return next()
-	};
-	try {
-		await sharp(req.file.path)
-		.resize({ width: 500, height: 750 })
-		.toFile(req.file.newFilePath) 
-		
-		fs.unlink(req.file.path, (error) => {
-			if(error) console.log(error);
-		});
-		next();
-		} 	
-	catch(error) {
-		res.status(403).json({ error });
+    	return next();
 	}
+	sharp(req.file.path)
+    .resize({ width: 500, height: 750 })
+    .toFile(path.join('images', `compressed_${req.file.filename}`))
+    .then(() => {
+      fs.unlink(req.file.path, () => {
+        req.file.path = path.join('images', `compressed_${req.file.filename}`);
+        next();
+      });
+    })
+    .catch(error => {
+		console.log(error);
+		return next();
+	});
 };
