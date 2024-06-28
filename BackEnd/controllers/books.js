@@ -11,7 +11,9 @@ exports.createBook = (req, res, next) => {
       userId: req.auth.userId,
       imageUrl: `${req.protocol}://${req.get('host')}/images/compressed_${req.file.filename}`,
       averageRating: bookObject.ratings[0].grade
+      
   });
+  console.log(bookObject)
   book.save()
       .then(() => { res.status(201).json({ message: 'Objet enregistré !' }) })
       .catch(error => { res.status(400).json( { error })});
