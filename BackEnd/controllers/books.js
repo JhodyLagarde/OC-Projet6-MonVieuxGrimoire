@@ -3,20 +3,26 @@ const fs = require('fs');
 
 // Créer un nouveau livre
 exports.createBook = (req, res, next) => {
-  const bookObject = JSON.parse(req.body.book);
-  delete bookObject._id;
-  delete bookObject._userId;
-  const book = new Book({
-      ...bookObject,
-      userId: req.auth.userId,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/compressed_${req.file.filename}`,
-      averageRating: bookObject.ratings[0].grade
-      
-  });
-  console.log(bookObject)
-  book.save()
-      .then(() => { res.status(201).json({ message: 'Objet enregistré !' }) })
-      .catch(error => { res.status(400).json( { error })});
+    //Recuperation du body dans un constante
+    const bookObject = JSON.parse(req.body.book);
+    //Suppression de l'id du livre et de l'id utilisateur par securité
+    delete bookObject._id;
+    delete bookObject._userId;
+    //Création d'un nouveau livre
+    const book = new Book({
+        //Récupération de l'entièreté du body reçu
+        ...bookObject,
+        //Nouvelle Id utilisateur
+        userId: req.auth.userId,
+        //Création de l'url de l'image reçu
+        imageUrl: `${req.protocol}://${req.get('host')}/images/compressed_${req.file.filename}`,
+        //Affectation de la note reçu "Ratings" dans averageRating
+        averageRating: bookObject.ratings[0].grade
+    });
+    console.log(bookObject)
+    book.save()
+        .then(() => { res.status(201).json({ message: 'Objet enregistré !' }) })
+        .catch(error => { res.status(400).json( { error })});
 };
 
 // Modifier un livre appartenant à l'utilisateur qui l'a créé
