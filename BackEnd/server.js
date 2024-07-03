@@ -19,7 +19,7 @@ const normalizePort = val => {
 const port = normalizePort( process.env.PORT || process.env.PORT_DB );
 app.set('port', port);
 
-// Géstion des erreurs
+// Gestion des erreurs
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
