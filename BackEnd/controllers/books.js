@@ -122,7 +122,7 @@ exports.addRate = (req, res, next) => {
                 // Mise a jour de la moyenne du livre
                 Book.findOneAndUpdate({ _id: req.params.id }, 
                     { $push: { ratings: { userId: req.body.userId, grade: req.body.rating } }, 
-                    $set: { averageRating: book.averageRating } }, 
+                    $set: { averageRating: averageRating } }, 
                     {new: true})
                 .then((newBook) => res.status(200).json(newBook))
                 .catch(error => res.status(400).json({ error }));
